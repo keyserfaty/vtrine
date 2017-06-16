@@ -31,7 +31,7 @@ ul {
 header #logo {
     height: 24px;
     width: 100px;
-    background: url('./statics/images/vtrine.svg') no-repeat;
+    background: url('./images/vtrine.svg') no-repeat;
     margin: 0 0 0 32px;
     cursor: pointer;
 }
@@ -56,17 +56,17 @@ header .actions .help, header .actions .downloads {
 }
 
 header .actions .help {
-    background: url('./statics/images/help.svg') no-repeat;
+    background: url('./images/help.svg') no-repeat;
 }
 
 header .actions .downloads {
-    background: url('./statics/images/folder.svg') no-repeat;
+    background: url('./images/folder.svg') no-repeat;
     margin-left: 44px;
 }
 
 section.single {
     background-color: black;
-    background: url('./statics/images/test-image.jpg');
+    background: url('./images/test-image.jpg');
     height: 100vh;
     width: 100%;
     background-size: cover;
@@ -98,7 +98,7 @@ section.single footer .user {
 section.single footer .user .photo {
     height: 24px;
     width: 24px;
-    background: url('./statics/images/photo.png') no-repeat;
+    background: url('./images/photo.png') no-repeat;
     border-radius: 15px;
 }
 
@@ -126,7 +126,7 @@ section.single footer .credits {
 #search .search-box .icon {
     height: 20px;
     width: 20px;
-    background: url('./statics/images/search.svg') no-repeat;
+    background: url('./images/search.svg') no-repeat;
     background-size: cover;
 }
 
@@ -244,7 +244,7 @@ section.single footer .credits {
 }
 
 #download .images .content ul li.image {
-    background: url('./statics/images/1.jpg');
+    background: url('./images/1.jpg');
     width: 128px;
     height: 96px;
     cursor: pointer;
@@ -285,11 +285,11 @@ section.single footer .credits {
 }
 
 #download .images .content ul li.image .remove {
-    background: url('./statics/images/trash.svg') no-repeat;
+    background: url('./images/trash.svg') no-repeat;
 }
 
 #download .images .content ul li.image .download {
-    background: url('./statics/images/download.svg') no-repeat;
+    background: url('./images/download.svg') no-repeat;
     margin-left: 18px;
 }
 
