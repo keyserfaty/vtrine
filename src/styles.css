@@ -1,0 +1,331 @@
+@font-face {
+    font-family: 'ProximaNova-Regular';
+    src: url('./statics/fonts/ProximaNova-Regular.otf') format('otf');
+}
+
+@font-face {
+    font-family: 'ProximaNova-Bold';
+    src: url('./statics/fonts/ProximaNova-Bold.otf') format('otf');
+}
+
+body {
+    margin: 0;
+    overflow: hidden;
+    font-family: 'ProximaNova-Regular', sans-serif;
+    font-size: 16px;
+    color: #637273;
+}
+
+a {
+    color: #26C6DA;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+header #logo {
+    height: 24px;
+    width: 100px;
+    background: url('./statics/images/vtrine.svg') no-repeat;
+    margin: 0 0 0 32px;
+    cursor: pointer;
+}
+
+header {
+    height: 64px;
+    background: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header .actions {
+    display: flex;
+    margin-right: 52px;
+}
+
+header .actions .help, header .actions .downloads {
+    height: 20px;
+    width: 20px;
+    cursor: pointer;
+}
+
+header .actions .help {
+    background: url('./statics/images/help.svg') no-repeat;
+}
+
+header .actions .downloads {
+    background: url('./statics/images/folder.svg') no-repeat;
+    margin-left: 44px;
+}
+
+section.single {
+    background-color: black;
+    background: url('./statics/images/test-image.jpg');
+    height: 100vh;
+    width: 100%;
+    background-size: cover;
+    background-position-y: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+section.single footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    font-size: 12px;
+    color: #E7F1F3;
+}
+
+section.single footer .user, section.single footer .credits {
+    display: inline;
+    padding: 32px;
+}
+
+section.single footer .user {
+    float: left;
+    display: flex;
+    align-items: center;
+}
+
+section.single footer .user .photo {
+    height: 24px;
+    width: 24px;
+    background: url('./statics/images/photo.png') no-repeat;
+    border-radius: 15px;
+}
+
+section.single footer .user .name {
+    margin-left: 8px;
+}
+
+section.single footer .credits {
+    float: right;
+}
+
+#search .search-box {
+    background: white;
+    height: 55px;
+    width: 720px;
+    border-radius: 4px;
+    opacity: .9;
+    padding: 16px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    margin-top: -120px;
+}
+
+#search .search-box .icon {
+    height: 20px;
+    width: 20px;
+    background: url('./statics/images/search.svg') no-repeat;
+    background-size: cover;
+}
+
+#search .search-box input {
+    height: 36px;
+    margin-left: 8px;
+    border: 0;
+    font-size: 16px;
+    color: #646973;
+    width: 100%;
+}
+
+#search .search-box input {
+    outline: none;
+}
+
+#on-boarding {
+    color: #313E40;
+    height: 400px;
+    width: 400px;
+    background: white;
+    margin-top: -250px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#on-boarding .image {
+    height: 128px;
+    width: 128px;
+    background: #969696;
+    border-radius: 65px;
+    margin-top: 70px;
+    color: #313E40;
+}
+
+#on-boarding .caption {
+}
+
+#on-boarding .footer {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 30px 65px;
+    box-sizing: border-box;
+}
+
+#on-boarding .footer .next {
+    color: #26C6DA;
+    cursor: pointer;
+}
+
+#on-boarding .footer .nav ul {
+    display: flex;
+}
+
+#on-boarding .footer .nav ul li {
+    height: 8px;
+    width: 8px;
+    margin-left: 5px;
+    border: 1px solid #313E40;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+#on-boarding .footer .nav ul li:first-child {
+    background: #313E40;
+}
+
+#download {
+    height: 330px;
+    width: 304px;
+    background: white;
+    border-radius: 4px;
+    position: fixed;
+    top: 80px;
+    right: 32px;
+}
+
+#download .header {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 13px;
+}
+
+#download .header .title {
+    padding-left: 15px;
+    padding-top: 16px;
+    font-weight: bold;
+}
+
+#download .header .clear {
+    padding-right: 15px;
+    padding-top: 21px;
+    font-size: 12px;
+    color: #26C6DA;
+    cursor: pointer;
+}
+
+#download .images {
+    height: 251px;
+}
+
+#download .images .content {
+    height: 250px;
+    overflow: scroll;
+}
+
+#download .images .content ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+#download .images .content ul li.image {
+    background: url('./statics/images/1.jpg');
+    width: 128px;
+    height: 96px;
+    cursor: pointer;
+}
+
+#download .images .content ul li.image:hover {
+    box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, .3);
+}
+
+#download .images .content ul li.image:hover .remove, #download .images .content ul li.image:hover .download {
+    display: block;
+}
+
+#download .images .content ul li.image:nth-child(even) {
+    margin: 8px 16px 8px 8px;
+}
+
+#download .images .content ul li.image:nth-child(odd) {
+    margin: 8px 8px 8px 16px;
+}
+
+#download .images .content ul li.image:nth-child(1), #download .images .content ul li.image:nth-child(2) {
+    margin-top: 0;
+}
+
+#download .images .content ul li.image .actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+#download .images .content ul li.image .remove, #download .images .content ul li.image .download {
+    background-size: cover;
+    display: none;
+    height: 20px;
+    width: 20px;
+}
+
+#download .images .content ul li.image .remove {
+    background: url('./statics/images/trash.svg') no-repeat;
+}
+
+#download .images .content ul li.image .download {
+    background: url('./statics/images/download.svg') no-repeat;
+    margin-left: 18px;
+}
+
+#download .footer {
+    height: 28px;
+    background: white;
+    border-radius: 0 0 5px 5px;
+    text-align: center;
+}
+
+#download .footer button {
+    position: relative;
+    bottom: 20px;
+    width: 240px;
+    height: 40px;
+    background: #26C6DA;
+    color: #E7F1F3;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'ProximaNova-Bold', sans-serif;
+    font-size: 12px;
+    letter-spacing: .8;
+}
+
+#download .footer button:focus {
+    outline: none;
+}
+
+#download .arrow {
+    position: absolute;
+    right: 22px;
+    top: -8px;
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid white;
+}
