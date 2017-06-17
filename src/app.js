@@ -1,7 +1,3 @@
-// router here
-const holi = 'holi'
-console.log('holi')
-
 const createStore = function createStoreFn (reducer) {
   let state = undefined
   let subscribers = []
@@ -9,6 +5,7 @@ const createStore = function createStoreFn (reducer) {
   return {
     dispatch: function (action) {
       state = reducer(state, action)
+      console.log(action, state)
       subscribers.forEach(function (handle) {
         return handle(state, action)
       })
@@ -22,4 +19,32 @@ const createStore = function createStoreFn (reducer) {
   }
 }
 
-export default createStore
+// model
+const initialState = {
+  searchValue: '',
+}
+
+const reducer = (state = initialState, action) => {
+  switch (action.type) {
+    case 'ON_WINDOW_LOAD': {
+      return {
+        ...state,
+      }
+    }
+
+    default:
+      return state
+  }
+}
+
+const store = createStore(reducer)
+
+// view
+store.subscribe((state, action) => {
+
+})
+
+// events
+window.addEventListener('load', () => {
+  store.dispatch({ type: 'ON_WINDOW_LOAD' })
+})

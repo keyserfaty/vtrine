@@ -49,7 +49,6 @@ function mapError (err) {
       chalk.yellow(err.message))
   }
 
-  this.end()
 }
 /* */
 
@@ -60,13 +59,13 @@ gulp.task('watchify', function () {
 
   connect.server({
     port: 8000,
-    root: 'src/statics'
+    root: 'dist'
   })
 
   livereload.listen(35729)
 
   bundler.on('update', function () {
-    console.log('update event')
+    console.log('Bundle changed')
 
     bundleJs(bundler)
   })

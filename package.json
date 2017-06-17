@@ -17,6 +17,7 @@
     "url": "https://github.com/keyserfaty/vtrine/issues"
   },
   "devDependencies": {
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "babel-plugin-transform-react-jsx": "^6.8.0",
     "babel-preset-es2015": "^6.18.0",
     "babelify": "^7.3.0",
