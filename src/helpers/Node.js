@@ -1,5 +1,4 @@
 import { d } from '../app'
-import uniqueId from '../helpers/uniqueId'
 
 const EVENTS = {
   onClick: 'click',
@@ -35,15 +34,4 @@ export const Node = (elem, attrs, ...children) => {
   node.setAttribute('data-unique-id', uniqueId())
 
   return node
-}
-
-export const renderNode = (render, node, parent) => {
-  const _node = d.querySelector(`[data-unique-id='${node.getAttribute('data-unique-id')}']`)
-
-  if (_node == null && render) {
-    const _parent = d.querySelector(parent)
-    _parent.appendChild(node)
-  } else if (_node != null && !render) {
-    _node.parentNode.removeChild(_node)
-  }
 }
