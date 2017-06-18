@@ -85,6 +85,13 @@ const reducer = (state = initialState, action) => {
       }
     }
 
+    case 'ON_REMOVE_IMAGE_FROM_QUEUE': {
+      return {
+        ...state,
+        imagesQueue: state.imagesQueue.filter((image, i) => i !== Number(action.payload.id))
+      }
+    }
+
     default:
       return state
   }
@@ -101,7 +108,7 @@ const folder = header.querySelector('.downloads')
 store.subscribe((state, action) => {
   switch (action.type) {
     case 'ON_INPUT_ENTER_KEY_DOWN': {
-      console.log('holi')
+      console.log('should redirect')
       break
     }
 
@@ -109,14 +116,7 @@ store.subscribe((state, action) => {
       // Nodes creation
       const arrow = Node('div', { class: 'arrow' })
 
-      const imagesQueue = state.imagesQueue
-      const liList = imagesQueue.map((image, i) =>
-        Node('li', { class: 'image', style: `background: url('${image}')` },
-          Node('div', { class: 'actions', id: i },
-            Node('div', { class: 'remove' }), Node('div', { class: 'download' })))
-      )
-
-      const ul = Node('ul', null, ...liList)
+      const ul = Node('ul', null)
       const content = Node('div', { class: 'content' }, ul)
       const images = Node('div', { class: 'images' }, content)
 
@@ -134,6 +134,7 @@ store.subscribe((state, action) => {
 
       if (displayDownloads) {
         body.appendChild(downloadsComponent)
+        store.dispatch({ type: '_RENDER_IMAGES_QUEUE' })
 
         clear.addEventListener('click', () => {
           store.dispatch({ type: 'ON_CLEAR_ALL_DOWNLOADS' })
@@ -157,21 +158,41 @@ store.subscribe((state, action) => {
       } else {
         const downloadPreviousNode = d.querySelector('#download')
         body.removeChild(downloadPreviousNode)
-
-        // is an eventListener killed when the node is unmounted?
       }
 
       break
     }
 
     case 'ON_CLEAR_ALL_DOWNLOADS': {
-
       const content = body.querySelector('#download .content')
       const ul = content.querySelector('ul')
 
       if (ul != null) {
         content.removeChild(ul)
       }
+
+      break
+    }
+
+    case '_RENDER_IMAGES_QUEUE':
+    case 'ON_REMOVE_IMAGE_FROM_QUEUE': {
+      // Clean DOM
+      const ul = body.querySelector('#download .content ul')
+      const liListPrevious = ul.querySelectorAll('li')
+
+      if (liListPrevious != null) {
+        liListPrevious.forEach(li => ul.removeChild(li))
+      }
+
+      // Build DOM
+      const imagesQueue = state.imagesQueue
+      const liList = imagesQueue.map((image, i) =>
+        Node('li', { class: 'image', style: `background: url('${image}')` },
+          Node('div', { class: 'actions', id: i },
+            Node('div', { class: 'remove' }), Node('div', { class: 'download' })))
+      )
+
+      liList.forEach(li => ul.appendChild(li))
 
       break
     }
