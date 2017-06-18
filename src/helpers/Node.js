@@ -31,7 +31,5 @@ export const Node = (elem, attrs, ...children) => {
     })
   }
 
-  node.setAttribute('data-unique-id', uniqueId())
-
   return node
 }
