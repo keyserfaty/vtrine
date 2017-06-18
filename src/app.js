@@ -78,6 +78,13 @@ const reducer = (state = initialState, action) => {
       }
     }
 
+    case 'ON_CLEAR_ALL_DOWNLOADS': {
+      return {
+        ...state,
+        imagesQueue: [],
+      }
+    }
+
     default:
       return state
   }
@@ -127,9 +134,34 @@ store.subscribe((state, action) => {
 
       if (displayDownloads) {
         body.appendChild(downloadsComponent)
+
+        const clearAll = downloadsComponent.querySelector('.clear')
+        const downloadAll = downloadsComponent.querySelector('button')
+
+        clearAll.addEventListener('click', () => {
+          store.dispatch({ type: 'ON_CLEAR_ALL_DOWNLOADS' })
+        })
+
+        downloadAll.addEventListener('click', () => {
+          store.dispatch({ type: 'ON_DOWNLOAD_ALL_DOWNLOADS' })
+        })
       } else {
         const downloadPreviousNode = d.querySelector('#download')
         body.removeChild(downloadPreviousNode)
+
+        // is an eventListener killed when the node is unmounted?
+      }
+
+      break
+    }
+
+    case 'ON_CLEAR_ALL_DOWNLOADS': {
+
+      const content = body.querySelector('#download .content')
+      const ul = content.querySelector('ul')
+
+      if (ul != null) {
+        content.removeChild(ul)
       }
 
       break
