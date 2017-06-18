@@ -59,6 +59,7 @@ const NodeSerializer = (qty, ...node) => {
 const initialState = {
   searchValue: '',
   displayDownloads: false,
+  imagesQueue: ['./statics/images/1.jpg', './statics/images/1.jpg']
 }
 
 const reducer = (state = initialState, action) => {
@@ -101,9 +102,8 @@ store.subscribe((state, action) => {
       // Nodes creation
       const arrow = Node('div', { class: 'arrow' })
 
-      // TODO: should come from state
-      const imagesList = ['./statics/images/1.jpg', './statics/images/1.jpg']
-      const liList = imagesList.map(image =>
+      const imagesQueue = state.imagesQueue
+      const liList = imagesQueue.map(image =>
         Node('li', { class: 'image', style: `background: url('${image}')` },
           Node('div', { class: 'actions' },
             Node('div', { class: 'remove' }), Node('div', { class: 'download' })))
