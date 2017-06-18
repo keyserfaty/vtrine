@@ -1,11 +1,22 @@
 import { d } from '../app'
+import uniqueId from '../helpers/uniqueId'
+
+const EVENTS = {
+  onClick: 'click',
+  onKeyUp: 'keyup',
+  onLoad: 'load'
+}
 
 export const Node = (elem, attrs, ...children) => {
   let node = d.createElement(elem)
 
   if (attrs != null) {
     Object.keys(attrs).forEach(key => {
-      node.setAttribute(key, attrs[key])
+      if (EVENTS.hasOwnProperty(key)) {
+        node.addEventListener(EVENTS[key], attrs[key])
+      } else {
+        node.setAttribute(key, attrs[key])
+      }
     })
   }
 
@@ -21,15 +32,18 @@ export const Node = (elem, attrs, ...children) => {
     })
   }
 
+  node.setAttribute('data-unique-id', uniqueId())
+
   return node
 }
 
-// TODO: won't work with same child props. Works only the first time
-export const NodeSerializer = (qty, ...node) => {
-  let list = []
-  for (let i = 0; i < qty; i++) {
-    list.push(Node(...node))
-  }
+export const renderNode = (render, node, parent) => {
+  const _node = d.querySelector(`[data-unique-id='${node.getAttribute('data-unique-id')}']`)
 
-  return list
+  if (_node == null && render) {
+    const _parent = d.querySelector(parent)
+    _parent.appendChild(node)
+  } else if (_node != null && !render) {
+    _node.parentNode.removeChild(_node)
+  }
 }
