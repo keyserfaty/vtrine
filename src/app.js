@@ -110,9 +110,9 @@ store.subscribe((state, action) => {
       const arrow = Node('div', { class: 'arrow' })
 
       const imagesQueue = state.imagesQueue
-      const liList = imagesQueue.map(image =>
+      const liList = imagesQueue.map((image, i) =>
         Node('li', { class: 'image', style: `background: url('${image}')` },
-          Node('div', { class: 'actions' },
+          Node('div', { class: 'actions', id: i },
             Node('div', { class: 'remove' }), Node('div', { class: 'download' })))
       )
 
@@ -135,15 +135,24 @@ store.subscribe((state, action) => {
       if (displayDownloads) {
         body.appendChild(downloadsComponent)
 
-        const clearAll = downloadsComponent.querySelector('.clear')
-        const downloadAll = downloadsComponent.querySelector('button')
-
-        clearAll.addEventListener('click', () => {
+        clear.addEventListener('click', () => {
           store.dispatch({ type: 'ON_CLEAR_ALL_DOWNLOADS' })
         })
 
-        downloadAll.addEventListener('click', () => {
+        button.addEventListener('click', () => {
           store.dispatch({ type: 'ON_DOWNLOAD_ALL_DOWNLOADS' })
+        })
+
+        ul.addEventListener('click', (e) => {
+          if (e.target.parentNode.id.length) {
+            if (e.target.attributes[0].nodeValue === 'remove') {
+              store.dispatch({ type: 'ON_REMOVE_IMAGE_FROM_QUEUE', payload: { id: e.target.parentNode.id } })
+            }
+
+            if (e.target.attributes[0].nodeValue === 'download') {
+              store.dispatch({ type: 'ON_DOWNLOAD_IMAGE_FROM_QUEUE', payload: { id: e.target.parentNode.id } })
+            }
+          }
         })
       } else {
         const downloadPreviousNode = d.querySelector('#download')
