@@ -122,6 +122,14 @@ store.subscribe((state, action) => {
       break
     }
 
+    /*
+    Optimizations in order:
+    1) Detect when component is attached to a state change and only then
+    re-render on state change. The rest of the elements should remain intact
+    2) Detect which elements in a list of elements have changed (for example:
+    in this case I shouldn't need to re-render all `li` elements, I should only
+    remove the removed ones or change the changed ones. Could use a hash table for that?
+     */
     case '_RENDER_IMAGES_QUEUE':
     case 'ON_REMOVE_IMAGE_FROM_QUEUE': {
       // Clean DOM
