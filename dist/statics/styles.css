@@ -244,7 +244,6 @@ section.single footer .credits {
 }
 
 #download .images .content ul li.image {
-    background: url('./images/1.jpg');
     width: 128px;
     height: 96px;
     cursor: pointer;
