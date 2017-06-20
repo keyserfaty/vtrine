@@ -2,6 +2,7 @@ import { createStore } from './helpers/store'
 
 import Downloads from './components/Downloads'
 import SearchBoxMain from './components/SearchBoxMain'
+import OnBoarding from './components/OnBoarding'
 
 export const d = document
 
@@ -75,6 +76,10 @@ store.subscribe((state, action) => {
 
   if (state.routes.path !== '/' && searchBoxMainPreviousNode != null) {
     searchBoxMainPreviousNode.parentNode.removeChild(searchBoxMainPreviousNode)
+  }
+
+  if (state.routes.path === '/search' && single.querySelector('#on-boarding') == null) {
+    single.appendChild(OnBoarding(props))
   }
 
   // displayDownloads changes
