@@ -1,11 +1,15 @@
 import { createStore } from './helpers/store'
 
 import Downloads from './components/Downloads'
+import SearchBoxMain from './components/SearchBoxMain'
 
 export const d = document
 
 // model
 const initialState = {
+  routes: {
+    path: '/'
+  },
   searchValue: '',
   displayDownloads: false,
   imagesQueue: ['./statics/images/1.jpg', './statics/images/1.jpg']
@@ -17,6 +21,9 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         searchValue: action.payload.searchValue,
+        routes: {
+          path: '/search'
+        }
       }
     }
 
@@ -49,15 +56,25 @@ const reducer = (state = initialState, action) => {
 const store = createStore(reducer)
 
 // view
-const searchInput = d.querySelector('input')
 const body = d.querySelector('body')
 const header = d.querySelector('header')
 const folder = header.querySelector('.downloads')
+const single = body.querySelector('.single')
 
 store.subscribe((state, action) => {
   const props = {
     dispatch: store.dispatch,
     ...state,
+  }
+
+  const searchBoxMainPreviousNode = d.querySelector('#search')
+
+  if (state.routes.path === '/') {
+    single.appendChild(SearchBoxMain(props))
+  }
+
+  if (state.routes.path !== '/' && searchBoxMainPreviousNode != null) {
+    searchBoxMainPreviousNode.parentNode.removeChild(searchBoxMainPreviousNode)
   }
 
   // displayDownloads changes
@@ -84,7 +101,7 @@ store.subscribe((state, action) => {
 
   switch (action.type) {
     case 'ON_INPUT_ENTER_KEY_DOWN': {
-      console.log('should redirect')
+      window.history.pushState('', '', 'search?q=' + state.searchValue);
       break
     }
   }
@@ -93,17 +110,6 @@ store.subscribe((state, action) => {
 // events
 window.addEventListener('load', () => {
   store.dispatch({ type: 'ON_WINDOW_LOAD' })
-})
-
-searchInput.addEventListener('keyup', e => {
-  if (e.keyCode === 13) {
-    store.dispatch({
-      type: 'ON_INPUT_ENTER_KEY_DOWN',
-      payload: {
-        searchValue: e.target.value,
-      }
-    })
-  }
 })
 
 folder.addEventListener('click', () => {
