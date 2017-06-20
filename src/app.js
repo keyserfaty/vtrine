@@ -42,6 +42,16 @@ const reducer = (state = initialState, action) => {
       }
     }
 
+    case 'ON_ADD_IMAGE_TO_QUEUE': {
+      return {
+        ...state,
+        imagesQueue: [
+          ...state.imagesQueue,
+          ...action.payload.image
+        ]
+      }
+    }
+
     case 'ON_REMOVE_IMAGE_FROM_QUEUE': {
       return {
         ...state,
@@ -68,6 +78,7 @@ store.subscribe((state, action) => {
     ...state,
   }
 
+  // route changes
   const searchBoxMainPreviousNode = d.querySelector('#search')
 
   if (state.routes.path === '/') {
