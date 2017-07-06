@@ -1,5 +1,6 @@
 import { createStore } from './helpers/store'
 import { exists } from './helpers'
+import { clientId, url } from './constants'
 
 import Downloads from './components/Downloads'
 import SearchBoxMain from './components/SearchBoxMain'
@@ -14,7 +15,8 @@ const initialState = {
   },
   searchValue: '',
   displayDownloads: false,
-  imagesQueue: ['./statics/images/1.jpg', './statics/images/1.jpg']
+  imagesQueue: ['./statics/images/1.jpg', './statics/images/1.jpg'],
+  imagesList: [],
 }
 
 const reducer = (state = initialState, action) => {
@@ -61,6 +63,13 @@ const reducer = (state = initialState, action) => {
       }
     }
 
+    case 'ON_NEW_IMAGES': {
+      return {
+        ...state,
+        imagesList: action.payload.images
+      }
+    }
+
     default:
       return state
   }
@@ -92,8 +101,11 @@ store.subscribe((state, action) => {
     searchBoxMainPreviousNode.parentNode.removeChild(searchBoxMainPreviousNode)
   }
 
-  if (state.routes.path === '/search' && !exists(onBoardingNode)) { // TODO: should add checking from localStorage too
+  const isFirstLoad = localStorage.getItem('first_load')
+
+  if (state.routes.path === '/search' && !exists(onBoardingNode) && !exists(isFirstLoad)) {
     single.appendChild(OnBoarding(props))
+    localStorage.setItem('first_load', false)
   }
 
   // imagesQueue changes
@@ -115,15 +127,45 @@ store.subscribe((state, action) => {
 
   switch (action.type) {
     case 'ON_INPUT_ENTER_KEY_DOWN': {
-      window.history.pushState('', '', 'search?q=' + state.searchValue);
+      window.history.pushState('', '', 'search?q=' + state.searchValue)
+      store.dispatch({ type: 'ON_FETCH_IMAGES' })
       break
     }
+
+    case 'ON_FETCH_IMAGES': {
+      const xml = new XMLHttpRequest();
+
+      xml.addEventListener('load', function () {
+          store.dispatch({
+            type: 'ON_NEW_IMAGES',
+            payload: {
+              images: JSON.parse(this.responseText)
+            }
+          })
+        }
+      );
+      xml.open('GET', url + clientId);
+      xml.send();
+
+      break
+    }
+
+    default:
+      return false
   }
 })
 
 // events
 window.addEventListener('load', () => {
   store.dispatch({ type: 'ON_WINDOW_LOAD' })
+})
+
+window.addEventListener('keyup', function (e) {
+  if (e.keyCode === 32) {
+    store.dispatch({
+      type: 'ON_SPACE_BAR'
+    })
+  }
 })
 
 folder.addEventListener('click', () => {
