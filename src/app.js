@@ -1,4 +1,5 @@
 import { createStore } from './helpers/store'
+import { exists } from './helpers'
 
 import Downloads from './components/Downloads'
 import SearchBoxMain from './components/SearchBoxMain'
@@ -55,7 +56,8 @@ const reducer = (state = initialState, action) => {
     case 'ON_REMOVE_IMAGE_FROM_QUEUE': {
       return {
         ...state,
-        imagesQueue: state.imagesQueue.filter((image, i) => i !== Number(action.payload.id))
+        imagesQueue: state.imagesQueue
+          .filter((image, i) => i !== Number(action.payload.id))
       }
     }
 
@@ -80,39 +82,35 @@ store.subscribe((state, action) => {
 
   // route changes
   const searchBoxMainPreviousNode = d.querySelector('#search')
+  const onBoardingNode = single.querySelector('#on-boarding')
 
-  if (state.routes.path === '/') {
+  if (state.routes.path === '/' && !exists(searchBoxMainPreviousNode)) {
     single.appendChild(SearchBoxMain(props))
   }
 
-  if (state.routes.path !== '/' && searchBoxMainPreviousNode != null) {
+  if (state.routes.path !== '/' && exists(searchBoxMainPreviousNode)) {
     searchBoxMainPreviousNode.parentNode.removeChild(searchBoxMainPreviousNode)
   }
 
-  if (state.routes.path === '/search' && single.querySelector('#on-boarding') == null) {
+  if (state.routes.path === '/search' && !exists(onBoardingNode)) { // TODO: should add checking from localStorage too
     single.appendChild(OnBoarding(props))
   }
 
-  // displayDownloads changes
+  // imagesQueue changes
   const downloadPreviousNode = d.querySelector('#download')
 
-  if (state.displayDownloads && downloadPreviousNode == null) {
+  if (state.displayDownloads && exists(downloadPreviousNode)) {
+    downloadPreviousNode.parentNode.removeChild(downloadPreviousNode)
     body.appendChild(Downloads(props))
   }
 
-  if (!state.displayDownloads && downloadPreviousNode != null) {
-    downloadPreviousNode.parentNode.removeChild(downloadPreviousNode)
+  // displayDownloads changes
+  if (state.displayDownloads && !exists(downloadPreviousNode)) {
+    body.appendChild(Downloads(props))
   }
 
-  // imagesQueue changes
-  const content = body.querySelector('#download .content')
-
-  if (state.imagesQueue.length === 0 && content != null) {
-    const ul = content.querySelector('#download .content ul')
-
-    if (ul != null) {
-      content.removeChild(ul)
-    }
+  if (!state.displayDownloads && exists(downloadPreviousNode)) {
+    downloadPreviousNode.parentNode.removeChild(downloadPreviousNode)
   }
 
   switch (action.type) {
