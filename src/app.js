@@ -13,15 +13,21 @@ export const d = document
 
 // model
 const initialState = {
+  // routing
   routes: {
     path: '/'
   },
+
+  // ui
   searchValue: '',
   displayDownloads: false,
   imagesQueue: ['./statics/images/1.jpg', './statics/images/1.jpg'],
-  imagesList: [],
   currentImage: null,
-  nextImage: null
+  currentImageId: 0,
+  nextImage: null,
+
+  // async
+  imagesList: [],
 }
 
 const reducer = (state = initialState, action) => {
@@ -68,12 +74,21 @@ const reducer = (state = initialState, action) => {
       }
     }
 
-    case 'ON_NEW_IMAGES': {
+    case 'ON_FETCH_IMAGES_SUCCESS': {
       return {
         ...state,
         imagesList: action.payload.images,
-        currentImage: action.payload.images[0],
-        nextImage: action.payload.images[1]
+        currentImage: action.payload.images[state.currentImageId],
+        nextImage: action.payload.images[state.currentImageId + 1]
+      }
+    }
+
+    case 'ON_LOAD_NEXT_IMAGE': {
+      return {
+        ...state,
+        currentImage: state.imagesList[state.currentImageId + 1],
+        nextImage: state.imagesList[state.currentImageId + 2],
+        currentImageId: state.currentImageId + 1
       }
     }
 
@@ -140,7 +155,7 @@ store.subscribe((state, action) => {
 
   // imagesList changes
   if (exists(state.currentImage)) {
-    single.setAttribute('style', 'background-image: url(' + state.currentImage.urls.small +')')
+    single.setAttribute('style', 'background-image: url(' + state.currentImage.urls.thumb +')')
   }
 
   switch (action.type) {
@@ -155,7 +170,7 @@ store.subscribe((state, action) => {
 
       //xml.addEventListener('load', function () {
           store.dispatch({
-            type: 'ON_NEW_IMAGES',
+            type: 'ON_FETCH_IMAGES_SUCCESS',
             payload: {
               images: dummyImages
             }
@@ -181,7 +196,7 @@ window.addEventListener('load', () => {
 window.addEventListener('keyup', function (e) {
   if (e.keyCode === 32) {
     store.dispatch({
-      type: 'ON_SPACE_BAR'
+      type: 'ON_LOAD_NEXT_IMAGE'
     })
   }
 })
