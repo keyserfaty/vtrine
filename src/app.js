@@ -122,6 +122,7 @@ const header = d.querySelector('header')
 const actions = header.querySelector('.actions')
 const folder = header.querySelector('.downloads')
 const single = body.querySelector('.single')
+const footer = single.querySelector('footer')
 
 store.subscribe((state, action) => {
   const props = {
@@ -170,9 +171,15 @@ store.subscribe((state, action) => {
     downloadPreviousNode.parentNode.removeChild(downloadPreviousNode)
   }
 
+  const userNode = footer.querySelector('.user')
+  const userPhotoNode = userNode.querySelector('.photo')
+  const userNameNode = userNode.querySelector('.name')
+
   // imagesList changes
   if (exists(state.currentImage)) {
     single.setAttribute('style', 'background-image: url(' + state.currentImage.urls.thumb +')')
+    userPhotoNode.setAttribute('style', 'background-image: url(' + state.currentImage.user.profile_image.small +')')
+    userNameNode.innerText = state.currentImage.user.name
   }
 
   switch (action.type) {
