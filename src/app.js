@@ -73,6 +73,8 @@ const reducer = (state = initialState, action) => {
     }
 
     case 'ON_ADD_IMAGE_TO_QUEUE': {
+      if (state.imagesQueue.some(image => image.id === state.currentImage.id)) return state
+
       return {
         ...state,
         imagesQueue: [
