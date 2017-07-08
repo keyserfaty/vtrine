@@ -69,8 +69,7 @@ header .actions .downloads {
 }
 
 section.single {
-    background-color: black;
-    background: url('./images/test-image.jpg');
+    background: #F0F7F8 url('./images/test-image.jpg');
     height: 100vh;
     width: 100%;
     background-size: cover;
@@ -78,6 +77,13 @@ section.single {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+section.single.loading {
+    z-index: -100;
+    /*filter: blur(10px);*/
+    /*position: absolute;*/
+    /*transform: scale(1.1);*/
 }
 
 section.single footer {

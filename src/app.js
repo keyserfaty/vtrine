@@ -1,6 +1,6 @@
 import { createStore } from './helpers/store'
 import { exists } from './helpers'
-import { clientId, url } from './constants'
+import { url } from './constants'
 
 import Downloads from './components/Downloads'
 import SearchBoxMain from './components/SearchBoxMain'
@@ -30,6 +30,8 @@ const initialState = {
 
   // async
   imagesList: [],
+  currentPage: null,
+  totalPages: null
 }
 
 const reducer = (state = initialState, action) => {
@@ -94,10 +96,12 @@ const reducer = (state = initialState, action) => {
     case 'ON_FETCH_IMAGES_SUCCESS': {
       return {
         ...state,
-        imagesList: action.payload.images,
+        imagesList: action.payload.images.results,
         currentImageId: 0,
-        currentImage: action.payload.images[0],
-        nextImage: action.payload.images[1]
+        currentImage: action.payload.images.results[0],
+        nextImage: action.payload.images.results[1],
+        currentPage: 1,
+        totalPages: action.payload.images.total_pages
       }
     }
 
@@ -179,6 +183,7 @@ store.subscribe((state, action) => {
   // imagesList changes
   if (exists(state.currentImage)) {
     single.setAttribute('style', 'background-image: url(' + state.currentImage.urls.thumb +')')
+    single.classList.add('loading')
     userPhotoNode.setAttribute('style', 'background-image: url(' + state.currentImage.user.profile_image.small +')')
     userNameNode.innerText = state.currentImage.user.name
   }
@@ -200,7 +205,7 @@ store.subscribe((state, action) => {
     case 'ON_KEY_UP_S': {
       if (!state.isNavigating) break
       if (state.imagesQueue.some(image => image.id === state.currentImage.id)) break
-      
+
       store.dispatch({ type: 'ON_ADD_IMAGE_TO_QUEUE' })
 
       break
@@ -218,19 +223,19 @@ store.subscribe((state, action) => {
     }
 
     case 'ON_FETCH_IMAGES': {
-      //const xml = new XMLHttpRequest();
+      const xml = new XMLHttpRequest();
 
-      //xml.addEventListener('load', function () {
+      xml.addEventListener('load', function () {
           store.dispatch({
             type: 'ON_FETCH_IMAGES_SUCCESS',
             payload: {
-              images: dummyImages
+              images: JSON.parse(this.responseText)
             }
           })
-        //}
-      //);
-      //xml.open('GET', url + clientId);
-      //xml.send();
+        }
+      );
+      xml.open('GET', url(1, state.searchValue));
+      xml.send();
 
       break
     }

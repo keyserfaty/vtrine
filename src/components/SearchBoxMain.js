@@ -18,7 +18,7 @@ const SearchBoxMain = props => {
     Node('div', { id: 'search' },
       Node('div', { class: 'search-box', onKeyUp: onKeyupInput },
         Node('div', { class: 'icon' }),
-        Node('input', { type: 'text', placeholder: 'Search photos' }))
+        Node('input', { type: 'text', placeholder: 'Search photos', autofocus: true }))
     )
   )
 }
