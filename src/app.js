@@ -21,7 +21,7 @@ const initialState = {
   // ui
   searchValue: '',
   displayDownloads: false,
-  imagesQueue: ['./statics/images/1.jpg', './statics/images/1.jpg'],
+  imagesQueue: [],
   currentImage: null,
   currentImageId: 0,
   nextImage: null,
@@ -61,7 +61,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         imagesQueue: [
           ...state.imagesQueue,
-          ...action.payload.image
+          state.currentImage
         ]
       }
     }
@@ -197,6 +197,12 @@ window.addEventListener('keyup', function (e) {
   if (e.keyCode === 32) {
     store.dispatch({
       type: 'ON_LOAD_NEXT_IMAGE'
+    })
+  }
+
+  if (e.keyCode === 83) {
+    store.dispatch({
+      type: 'ON_ADD_IMAGE_TO_QUEUE'
     })
   }
 })

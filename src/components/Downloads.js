@@ -38,7 +38,7 @@ const Downloads = props => {
         Node('div', { class: 'content' },
           Node('ul', { onClick: ulOnClick },
             ...imagesQueue.map((image, i) =>
-              Node('li', { class: 'image', style: `background: url('${image}')` },
+              Node('li', { class: 'image', style: `background: url('${image.urls.thumb}')` },
                 Node('div', { class: 'actions', id: i },
                   Node('div', { class: 'remove' }), Node('div', { class: 'download' })))
             )))),
