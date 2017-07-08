@@ -3,7 +3,9 @@ import { d } from '../app'
 const EVENTS = {
   onClick: 'click',
   onKeyUp: 'keyup',
-  onLoad: 'load'
+  onLoad: 'load',
+  onFocus: 'focus',
+  onBlur: 'blur'
 }
 
 export const Node = (elem, attrs, ...children) => {

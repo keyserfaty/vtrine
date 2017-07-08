@@ -21,6 +21,7 @@ const initialState = {
   // ui
   searchValue: '',
   displayDownloads: false,
+  isNavigating: false,
   imagesQueue: [],
   currentImage: null,
   currentImageId: 0,
@@ -36,9 +37,24 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         searchValue: action.payload.searchValue,
+        isNavigating: true,
         routes: {
           path: '/search'
         }
+      }
+    }
+
+    case 'ON_HEADER_SEARCH_BOX_FOCUS': {
+      return {
+        ...state,
+        isNavigating: false,
+      }
+    }
+
+    case 'ON_HEADER_SEARCH_BOX_BLUR': {
+      return {
+        ...state,
+        isNavigating: true,
       }
     }
 
@@ -115,7 +131,6 @@ store.subscribe((state, action) => {
   // route changes
   const searchBoxMainPreviousNode = d.querySelector('#search')
   const onBoardingNode = single.querySelector('#on-boarding')
-  const searchBoxHeaderNode = header.querySelector('.search')
 
   if (state.routes.path === '/' && !exists(searchBoxMainPreviousNode)) {
     single.appendChild(SearchBoxMain(props))
@@ -126,6 +141,7 @@ store.subscribe((state, action) => {
   }
 
   const isFirstLoad = localStorage.getItem('first_load')
+  const searchBoxHeaderNode = header.querySelector('.search')
 
   if (state.routes.path === '/search' && !exists(searchBoxHeaderNode)) {
     header.insertBefore(SearchBoxHeader(props), actions)
@@ -165,6 +181,20 @@ store.subscribe((state, action) => {
       break
     }
 
+    case 'ON_KEY_UP_SPACE_BAR': {
+      if (!state.isNavigating) break
+      store.dispatch({ type: 'ON_LOAD_NEXT_IMAGE' })
+
+      break
+    }
+
+    case 'ON_KEY_UP_S': {
+      if (!state.isNavigating) break
+      store.dispatch({ type: 'ON_ADD_IMAGE_TO_QUEUE' })
+
+      break
+    }
+
     case 'ON_FETCH_IMAGES': {
       //const xml = new XMLHttpRequest();
 
@@ -193,16 +223,16 @@ window.addEventListener('load', () => {
   store.dispatch({ type: 'ON_WINDOW_LOAD' })
 })
 
-window.addEventListener('keyup', function (e) {
+window.addEventListener('keyup', (e) => {
   if (e.keyCode === 32) {
     store.dispatch({
-      type: 'ON_LOAD_NEXT_IMAGE'
+      type: 'ON_KEY_UP_SPACE_BAR'
     })
   }
 
   if (e.keyCode === 83) {
     store.dispatch({
-      type: 'ON_ADD_IMAGE_TO_QUEUE'
+      type: 'ON_KEY_UP_S'
     })
   }
 })
