@@ -140,6 +140,22 @@ header .search .search-box input {
     font-size: 16px;
 }
 
+#save {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    position: fixed;
+    width: 100%;
+}
+
+#save .icon {
+    background: url('./images/save.svg') no-repeat;
+    background-size: 100%;
+    height: 160px;
+    width: 160px;
+}
+
 #search .search-box {
     background: white;
     height: 55px;
