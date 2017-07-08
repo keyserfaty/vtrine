@@ -94,8 +94,9 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         imagesList: action.payload.images,
-        currentImage: action.payload.images[state.currentImageId],
-        nextImage: action.payload.images[state.currentImageId + 1]
+        currentImageId: 0,
+        currentImage: action.payload.images[0],
+        nextImage: action.payload.images[1]
       }
     }
 
