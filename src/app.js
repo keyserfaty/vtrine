@@ -32,7 +32,8 @@ const initialState = {
   // async
   imagesList: [],
   currentPage: null,
-  totalPages: null
+  totalPages: null,
+  totalImages: null
 }
 
 const reducer = (state = initialState, action) => {
@@ -93,6 +94,13 @@ const reducer = (state = initialState, action) => {
       }
     }
 
+    case 'ON_END_OF_LIST': {
+      return {
+        ...state,
+        currentImageId: 0
+      }
+    }
+
     case 'ON_FETCH_IMAGES': {
       return {
         ...state,
@@ -114,14 +122,19 @@ const reducer = (state = initialState, action) => {
         ...action.payload.images.results
       ]
 
+      const currentImage = isNewRequest
+      ? action.payload.images.results[currentImageId]
+      : state.imagesList[currentImageId]
+
       return {
         ...state,
         imagesList,
+        currentImage,
         currentImageId,
         isNavigating: true,
-        currentImage: action.payload.images.results[currentImageId],
         nextImage: action.payload.images.results[currentImageId + 1],
-        totalPages: action.payload.images.total_pages
+        totalPages: action.payload.images.total_pages,
+        totalImages: action.payload.images.total
       }
     }
 
@@ -196,7 +209,7 @@ store.subscribe((state, action) => {
     downloadFullNode.parentNode.removeChild(downloadFullNode)
   }
 
-    // displayDownloads changes
+  // displayDownloads changes
   if (state.displayDownloads && !exists(downloadPreviousNode)) {
     body.appendChild(Downloads(props))
   }
@@ -218,12 +231,22 @@ store.subscribe((state, action) => {
   }
 
   // requesting new images
-  if (state.currentImageId === state.imagesList.length - 2 && state.imagesList.length / 10 === state.currentPage) {
+  const isTwoImagesAwayFromEnd = state.currentImageId === state.imagesList.length - 2
+  const isNotInNewPage = state.imagesList.length / 10 === state.currentPage
+  const haveNotFetchedAllImages = state.imagesList.length !== state.totalImages
+
+  if (isTwoImagesAwayFromEnd && isNotInNewPage && haveNotFetchedAllImages) {
     store.dispatch({
       type: 'ON_FETCH_IMAGES',
       payload: {
         currentPage: state.currentPage + 1
       }
+    })
+  }
+
+  if (state.currentImageId + 1 === state.imagesList.length && state.imagesList.length !== 0) {
+    store.dispatch({
+      type: 'ON_END_OF_LIST'
     })
   }
 
