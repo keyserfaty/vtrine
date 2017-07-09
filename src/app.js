@@ -224,7 +224,7 @@ store.subscribe((state, action) => {
 
   // imagesList changes
   if (exists(state.currentImage)) {
-    single.setAttribute('style', 'background-image: url(' + state.currentImage.urls.thumb +')')
+    single.setAttribute('style', `background: ${state.currentImage.color} url('${state.currentImage.urls.thumb}') no-repeat; background-size: cover;`)
     single.classList.add('loading')
     userPhotoNode.setAttribute('style', 'background-image: url(' + state.currentImage.user.profile_image.small +')')
     userNameNode.innerText = state.currentImage.user.name
