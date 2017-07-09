@@ -1,4 +1,5 @@
 import { createStore } from './helpers/store'
+import { preCachedImages } from './helpers'
 
 // model
 const initialState = {
@@ -18,6 +19,7 @@ const initialState = {
 
   // async
   imagesList: [],
+  preCachedImages: [],
   currentPage: null,
   totalPages: null,
   totalImages: null
@@ -109,17 +111,20 @@ const reducer = (state = initialState, action) => {
           ...action.payload.images.results
         ]
 
-      const currentImage = isNewRequest
-        ? action.payload.images.results[currentImageId]
-        : state.imagesList[currentImageId]
+      // pre-cache images
+      const imagesFromList = imagesList.map(item => item.urls.thumb)
+      const preCacheImages = preCachedImages(imagesFromList)
 
       return {
         ...state,
         imagesList,
-        currentImage,
         currentImageId,
+        currentImage: {
+          ...imagesList[currentImageId],
+          src: preCacheImages[currentImageId]
+        },
+        preCacheImages,
         isNavigating: true,
-        nextImage: action.payload.images.results[currentImageId + 1],
         totalPages: action.payload.images.total_pages,
         totalImages: action.payload.images.total
       }
@@ -128,8 +133,10 @@ const reducer = (state = initialState, action) => {
     case 'ON_LOAD_NEXT_IMAGE': {
       return {
         ...state,
-        currentImage: state.imagesList[state.currentImageId + 1],
-        nextImage: state.imagesList[state.currentImageId + 2],
+        currentImage: {
+          ...state.imagesList[state.currentImageId + 1],
+          src: state.preCacheImages[state.currentImageId + 1]
+        },
         currentImageId: state.currentImageId + 1
       }
     }

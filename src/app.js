@@ -1,6 +1,6 @@
 import { store } from './reducer'
 
-import { exists } from './helpers'
+import { exists, preCachedImages } from './helpers'
 import { url } from './constants'
 
 import Downloads from './components/Downloads'
@@ -82,7 +82,10 @@ store.subscribe((state, action) => {
 
   // imagesList changes
   if (exists(state.currentImage)) {
-    image.setAttribute('style', `background: ${state.currentImage.color} url('${state.currentImage.urls.thumb}') no-repeat; background-size: cover;`)
+    state.currentImage.src.then(src => {
+      image.setAttribute('style', `background: ${state.currentImage.color} url('${src}') no-repeat; background-size: cover;`)
+    })
+
     image.classList.add('loading')
     userPhotoNode.setAttribute('style', 'background-image: url(' + state.currentImage.user.profile_image.small +')')
     userNameNode.innerText = state.currentImage.user.name
