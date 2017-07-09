@@ -21,7 +21,7 @@ const header = d.querySelector('header')
 const headerContent = d.querySelector('header .content')
 const actions = headerContent.querySelector('.actions')
 const folder = headerContent.querySelector('.downloads')
-const image = body.querySelector('.container')
+const image = body.querySelector('.container .image')
 const footer = body.querySelector('footer')
 
 store.subscribe((state, action) => {

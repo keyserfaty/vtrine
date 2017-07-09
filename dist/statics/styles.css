@@ -92,7 +92,7 @@ header .content .actions svg:hover path, .icon.selected {
     fill: #9AB3B3;
 }
 
-section.container {
+section.container .image {
     background: #F0F7F8 url('./images/test-image.jpg');
     height: 100vh;
     width: 100%;
@@ -105,16 +105,16 @@ section.container {
     z-index: -100;
 }
 
-section.container.loading, section.container.loaded {
+section.container .image.loading, section.container .image.loaded {
     position: absolute;
     transform: scale(1.1);
 }
 
-section.container.loading {
+section.container .image.loading {
     filter: blur(25px);
 }
 
-section.container.loaded {
+section.container .image.loaded {
     filter: blur(0px);
     transition: 0.5s filter;
 }
