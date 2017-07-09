@@ -31,7 +31,7 @@ store.subscribe((state, action) => {
 
   // route changes
   const searchBoxMainPreviousNode = d.querySelector('#search')
-  const onBoardingNode = image.querySelector('#on-boarding')
+  const onBoardingNode = body.querySelector('#on-boarding')
 
   if (state.routes.path === '/' && !exists(searchBoxMainPreviousNode)) {
     image.appendChild(SearchBoxMain(props))
@@ -48,10 +48,11 @@ store.subscribe((state, action) => {
     header.insertBefore(SearchBoxHeader(props), actions)
   }
 
-  //if (state.routes.path === '/search' && !exists(onBoardingNode) && !exists(isFirstLoad)) {
-  //  image.appendChild(OnBoarding(props))
-  //  localStorage.setItem('first_load', false)
-  //}
+  // onBoarding changes
+  if (state.routes.path === '/search' && !exists(onBoardingNode) && !exists(isFirstLoad)) {
+    body.appendChild(OnBoarding(props))
+    localStorage.setItem('first_load', false)
+  }
 
   // imagesQueue changes
   const downloadPreviousNode = d.querySelector('#download')
@@ -97,32 +98,34 @@ store.subscribe((state, action) => {
       image.setAttribute('id', state.currentImage.id)
     })
 
-    function loadImage(imageURI) {
-      const request = new XMLHttpRequest();
+    image.classList.add('loading')
+    userPhotoNode.setAttribute('style', `background-image: url('${state.currentImage.user.profile_image.small}')`)
+    userNameNode.innerText = state.currentImage.user.name
+  }
 
-      request.onprogress = function (e) {
-        if (e.lengthComputable) {
-          loadingBar.setAttribute('style', 'width: ' + e.loaded / e.total * 100 + '%')
-        }
+  if (exists(state.currentImage) && state.currentImage.id !== image.id && !exists(onBoardingNode)) {
+    const imageURI = state.currentImage.urls.full
+    const request = new XMLHttpRequest()
+
+    request.onprogress = function (e) {
+      if (e.lengthComputable) {
+        loadingBar.setAttribute('style', 'width: ' + e.loaded / e.total * 100 + '%')
       }
-      request.onload = function () {
-        image.setAttribute('style', `background: url(data:image/jpeg;base64,${base64Encode(request.responseText)}) no-repeat; background-size: cover;`)
-        image.classList.remove('loading')
-        image.classList.add('loaded')
-      }
-      request.onloadend = function () {
-        loadingBar.setAttribute('style', 'width: 0%')
-      }
-      request.open("GET", imageURI, true);
-      request.overrideMimeType('text/plain; charset=x-user-defined');
-      request.send(null);
     }
 
-    loadImage(state.currentImage.urls.full)
+    request.onload = function () {
+      image.setAttribute('style', `background-image: url(data:image;base64,${base64Encode(request.responseText)})`)
+      image.classList.remove('loading')
+      image.classList.add('loaded')
+    }
 
-    image.classList.add('loading')
-    userPhotoNode.setAttribute('style', 'background-image: url(' + state.currentImage.user.profile_image.small +')')
-    userNameNode.innerText = state.currentImage.user.name
+    request.onloadend = function () {
+      loadingBar.setAttribute('style', 'width: 0%')
+    }
+
+    request.open("GET", imageURI, true)
+    request.overrideMimeType('text/plain charset=x-user-defined')
+    request.send(null)
   }
 
   // requesting new images
@@ -185,7 +188,7 @@ store.subscribe((state, action) => {
     }
 
     case 'ON_FETCH_IMAGES': {
-      const xml = new XMLHttpRequest();
+      const xml = new XMLHttpRequest()
 
       xml.addEventListener('load', function () {
           store.dispatch({
@@ -195,9 +198,9 @@ store.subscribe((state, action) => {
             }
           })
         }
-      );
-      xml.open('GET', url(state.currentPage, state.searchValue));
-      xml.send();
+      )
+      xml.open('GET', url(state.currentPage, state.searchValue))
+      xml.send()
 
       break
     }
@@ -225,7 +228,7 @@ store.subscribe((state, action) => {
           zip.generateAsync({type:"blob"})
           .then(function(content) {
             saveAs(content, "images.zip")
-          });
+          })
         })
 
       break
