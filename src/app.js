@@ -56,6 +56,7 @@ store.subscribe((state, action) => {
   // imagesQueue changes
   const downloadPreviousNode = d.querySelector('#download')
   const downloadFullNode = folder.querySelector('.full')
+  const folderPathNode = folder.querySelector('path')
 
   if (state.displayDownloads && exists(downloadPreviousNode)) {
     downloadPreviousNode.parentNode.removeChild(downloadPreviousNode)
@@ -73,10 +74,12 @@ store.subscribe((state, action) => {
   // displayDownloads changes
   if (state.displayDownloads && !exists(downloadPreviousNode)) {
     body.appendChild(Downloads(props))
+    folderPathNode.classList.add('selected')
   }
 
   if (!state.displayDownloads && exists(downloadPreviousNode)) {
     downloadPreviousNode.parentNode.removeChild(downloadPreviousNode)
+    folderPathNode.classList.remove('selected')
   }
 
   const userNode = footer.querySelector('.user')

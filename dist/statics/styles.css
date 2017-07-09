@@ -76,8 +76,7 @@ header .actions svg.help path {
     transform: translateY(-2px) translateX(-2px);
 }
 
-header .actions svg:hover path,
-.icon.selected {
+header .actions svg:hover path, .icon.selected {
     fill: #9AB3B3;
 }
 
