@@ -160,7 +160,7 @@ const header = d.querySelector('header')
 const actions = header.querySelector('.actions')
 const folder = header.querySelector('.downloads')
 const single = body.querySelector('.single')
-const footer = single.querySelector('footer')
+const footer = body.querySelector('footer')
 
 store.subscribe((state, action) => {
   const props = {

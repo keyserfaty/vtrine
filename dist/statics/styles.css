@@ -92,43 +92,40 @@ section.single {
 
 section.single.loading {
     z-index: -100;
-    /*filter: blur(10px);*/
-    /*position: absolute;*/
-    /*transform: scale(1.1);*/
+    filter: blur(15px);
+    position: absolute;
+    transform: scale(1.1);
 }
 
-section.single footer {
+footer {
     position: absolute;
     bottom: 0;
     width: 100%;
     font-size: 12px;
     color: #E7F1F3;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-section.single footer .user, section.single footer .credits {
-    display: inline;
+footer .user, footer .credits {
     padding: 32px;
 }
 
-section.single footer .user {
-    float: left;
+footer .user {
     display: flex;
     align-items: center;
 }
 
-section.single footer .user .photo {
+footer .user .photo {
     height: 24px;
     width: 24px;
     background: url('./images/photo.png') no-repeat;
     border-radius: 15px;
 }
 
-section.single footer .user .name {
+footer .user .name {
     margin-left: 8px;
-}
-
-section.single footer .credits {
-    float: right;
 }
 
 header .search .search-box {
