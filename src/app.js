@@ -18,9 +18,10 @@ export const d = document
 // view
 const body = d.querySelector('body')
 const header = d.querySelector('header')
-const actions = header.querySelector('.actions')
-const folder = header.querySelector('.downloads')
-const image = body.querySelector('.image')
+const headerContent = d.querySelector('header .content')
+const actions = headerContent.querySelector('.actions')
+const folder = headerContent.querySelector('.downloads')
+const image = body.querySelector('.container')
 const footer = body.querySelector('footer')
 
 store.subscribe((state, action) => {
@@ -42,16 +43,16 @@ store.subscribe((state, action) => {
   }
 
   const isFirstLoad = localStorage.getItem('first_load')
-  const searchBoxHeaderNode = header.querySelector('.search')
+  const searchBoxHeaderNode = headerContent.querySelector('.search')
 
   if (state.routes.path === '/search' && !exists(searchBoxHeaderNode)) {
-    header.insertBefore(SearchBoxHeader(props), actions)
+    headerContent.insertBefore(SearchBoxHeader(props), actions)
   }
 
   // onBoarding changes
   if (state.routes.path === '/search' && !exists(onBoardingNode) && !exists(isFirstLoad)) {
     body.appendChild(OnBoarding(props))
-    localStorage.setItem('first_load', false)
+    //localStorage.setItem('first_load', false)
   }
 
   // imagesQueue changes
@@ -86,21 +87,20 @@ store.subscribe((state, action) => {
   const userNode = footer.querySelector('.user')
   const userPhotoNode = userNode.querySelector('.photo')
   const userNameNode = userNode.querySelector('.name')
-  const loadingBar = d.querySelector('.loading-bar')
+  const loadingBar = header.querySelector('.loading')
 
   // imagesList changes
   if (exists(state.currentImage) && state.currentImage.id !== image.id) {
     image.classList.remove('loaded')
-    image.classList.add('loading')
 
     state.currentImage.src.then(src => {
+      image.classList.add('loading')
       image.setAttribute('style', `background: ${state.currentImage.color} url('${src}') no-repeat; background-size: cover;`)
       image.setAttribute('id', state.currentImage.id)
-    })
 
-    image.classList.add('loading')
-    userPhotoNode.setAttribute('style', `background-image: url('${state.currentImage.user.profile_image.small}')`)
-    userNameNode.innerText = state.currentImage.user.name
+      userPhotoNode.setAttribute('style', `background-image: url('${state.currentImage.user.profile_image.small}')`)
+      userNameNode.innerText = state.currentImage.user.name
+    })
   }
 
   if (exists(state.currentImage) && state.currentImage.id !== image.id && !exists(onBoardingNode)) {

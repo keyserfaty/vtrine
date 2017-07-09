@@ -41,28 +41,40 @@ header #logo {
 }
 
 header {
-    height: 64px;
     background: white;
+}
+
+header .loading {
+    content: attr(data-after);
+    width: 0%;
+    height: 4px;
+    background: #26C6DA;
+    display: block;
+    position: absolute;
+}
+
+header .content {
+    height: 64px;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-header .actions {
+header .content .actions {
     display: flex;
     margin-right: 52px;
 }
 
-header .actions .help, header .actions .downloads {
+header .content .actions .help, header .content .actions .downloads {
     cursor: pointer;
     position: relative;
 }
 
-header .actions .downloads {
+header .content .actions .downloads {
     margin-left: 44px;
 }
 
-header .actions .downloads .full {
+header .content .actions .downloads .full {
     height: 8px;
     width: 8px;
     background: #F04943;
@@ -72,20 +84,15 @@ header .actions .downloads .full {
     border-radius: 10px;
 }
 
-header .actions svg.help path {
+header .content .actions svg.help path {
     transform: translateY(-2px) translateX(-2px);
 }
 
-header .actions svg:hover path, .icon.selected {
+header .content .actions svg:hover path, .icon.selected {
     fill: #9AB3B3;
 }
 
-div.loading-bar {
-    border-bottom: 4px solid #26C6DA;
-    width: 0;
-}
-
-div.image {
+section.container {
     background: #F0F7F8 url('./images/test-image.jpg');
     height: 100vh;
     width: 100%;
@@ -98,16 +105,16 @@ div.image {
     z-index: -100;
 }
 
-div.image.loading, div.image.loaded {
+section.container.loading, section.container.loaded {
     position: absolute;
     transform: scale(1.1);
 }
 
-div.image.loading {
+section.container.loading {
     filter: blur(25px);
 }
 
-div.image.loaded {
+section.container.loaded {
     filter: blur(0px);
     transition: 0.5s filter;
 }
@@ -231,7 +238,7 @@ header .search .search-box input {
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -60%);
 }
 
 #on-boarding .image {
