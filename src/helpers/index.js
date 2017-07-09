@@ -1,5 +1,11 @@
 export const exists = node => node != null
 
+/**
+ * Takes the src of an image and returns a promise
+ * that resolves when that image is done downloading
+ * @param src
+ * @returns {Promise}
+ */
 const imageLoader = src => {
   return new Promise(function (resolve, reject) {
     let img = new Image()
@@ -21,6 +27,11 @@ const imageLoader = src => {
 export const preCachedImages = images => images
   .map(image => imageLoader(image))
 
+/**
+ * Encode a string into base64
+ * @param inputStr
+ * @returns {string}
+ */
 export const base64Encode = inputStr => {
   var b64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="
   var outputStr = ""
@@ -60,3 +71,54 @@ export const base64Encode = inputStr => {
 
   return outputStr
 }
+
+function loadImage(imageURI) {
+  const request = new XMLHttpRequest();
+
+  request.onprogress = function (e) {
+    if (e.lengthComputable) {
+      loadingBar.setAttribute('style', 'width: ' + e.loaded / e.total * 100 + '%')
+    }
+  }
+  request.onload = function () {
+    image.setAttribute('style', `background: url(data:image/jpeg;base64,${base64Encode(request.responseText)}) no-repeat; background-size: cover;`)
+    image.classList.remove('loading')
+    image.classList.add('loaded')
+  }
+  request.onloadend = function () {
+    loadingBar.setAttribute('style', 'width: 0%')
+  }
+  request.open("GET", imageURI, true);
+  request.overrideMimeType('text/plain; charset=x-user-defined');
+  request.send(null);
+}
+
+/**
+ * Takes the source of an image
+ * and returns a promise when the image is done downloading
+ * @param src
+ * @returns {Promise}
+ */
+export const imageDownload = src => {
+  return new Promise(function (resolve, reject) {
+    const request = new XMLHttpRequest();
+    request.onload = function () {
+      resolve(base64Encode(request.responseText))
+    }
+    request.onerror = function (err) {
+      reject(err)
+    }
+
+    request.open('GET', src, true)
+    request.overrideMimeType('text/plain; charset=x-user-defined');
+    request.send(null);
+  })
+}
+
+/**
+ * Takes a list of images and return
+ * a list of promises when for all downloads
+ * @param images
+ */
+export const imagesDownload = images => images
+  .map(image => imageDownload(image))

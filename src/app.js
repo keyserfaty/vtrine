@@ -1,6 +1,9 @@
+import { saveAs } from 'file-saver' // polyfill for saving zip files
+import JSZip from 'jszip'
+
 import { store } from './reducer'
 
-import { exists, preCachedImages, base64Encode } from './helpers'
+import { exists, base64Encode, imagesDownload } from './helpers'
 import { url } from './constants'
 
 import Downloads from './components/Downloads'
@@ -201,6 +204,26 @@ store.subscribe((state, action) => {
       if (exists(searchBoxHeaderInputNode)) {
         searchBoxHeaderInputNode.blur()
       }
+
+      break
+    }
+
+    case 'ON_DOWNLOAD_ALL_DOWNLOADS': {
+      const urlsList = state.imagesQueue.map(image => image.links.download)
+      const imagesListPromises = imagesDownload(urlsList)
+      Promise.all(imagesListPromises)
+        .then(response => {
+          const zip = new JSZip()
+
+          response.forEach((image, i) =>
+            zip.file(`${state.imagesQueue[i].id}.jpeg`, image, { base64: true })
+          )
+
+          zip.generateAsync({type:"blob"})
+          .then(function(content) {
+            saveAs(content, "images.zip")
+          });
+        })
 
       break
     }

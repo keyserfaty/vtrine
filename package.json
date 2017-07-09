@@ -37,5 +37,9 @@
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.8.0"
   },
-  "homepage": "https://github.com/keyserfaty/vtrine#readme"
+  "homepage": "https://github.com/keyserfaty/vtrine#readme",
+  "dependencies": {
+    "file-saver": "^1.3.3",
+    "jszip": "^3.1.3"
+  }
 }
