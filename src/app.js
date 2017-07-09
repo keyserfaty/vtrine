@@ -40,7 +40,6 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         searchValue: action.payload.searchValue,
-        isNavigating: true,
         routes: {
           path: '/search'
         }
@@ -118,6 +117,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         imagesList,
         currentImageId,
+        isNavigating: true,
         currentImage: action.payload.images.results[currentImageId],
         nextImage: action.payload.images.results[currentImageId + 1],
         totalPages: action.payload.images.total_pages
@@ -271,6 +271,15 @@ store.subscribe((state, action) => {
       xml.open('GET', url(state.currentPage, state.searchValue));
       xml.send();
 
+      break
+    }
+
+    case 'ON_FETCH_IMAGES_SUCCESS': {
+      const searchBoxHeaderInputNode = searchBoxHeaderNode.querySelector('input')
+      if (exists(searchBoxHeaderInputNode)) {
+        searchBoxHeaderInputNode.blur()
+      }
+      
       break
     }
 
