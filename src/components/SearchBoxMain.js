@@ -9,6 +9,7 @@ const SearchBoxMain = props => {
         type: 'ON_INPUT_ENTER_KEY_DOWN',
         payload: {
           searchValue: e.target.value,
+          path: '/search'
         }
       })
     }

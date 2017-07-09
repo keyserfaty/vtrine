@@ -26,12 +26,13 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case 'ON_WINDOW_LOAD':
     case 'ON_INPUT_ENTER_KEY_DOWN': {
       return {
         ...state,
         searchValue: action.payload.searchValue,
         routes: {
-          path: '/search'
+          path: action.payload.path
         }
       }
     }

@@ -50,10 +50,10 @@ store.subscribe((state, action) => {
   }
 
   // onBoarding changes
-  if (state.routes.path === '/search' && !exists(onBoardingNode) && !exists(isFirstLoad)) {
-    body.appendChild(OnBoarding(props))
-    //localStorage.setItem('first_load', false)
-  }
+  //if (state.routes.path === '/search' && !exists(onBoardingNode) && !exists(isFirstLoad)) {
+  //  body.appendChild(OnBoarding(props))
+  //  //localStorage.setItem('first_load', false)
+  //}
 
   // imagesQueue changes
   const downloadPreviousNode = d.querySelector('#download')
@@ -150,7 +150,7 @@ store.subscribe((state, action) => {
 
   switch (action.type) {
     case 'ON_INPUT_ENTER_KEY_DOWN': {
-      window.history.pushState('', '', 'search?q=' + state.searchValue)
+      window.history.pushState('', '', '#search?q=' + state.searchValue)
       store.dispatch({
         type: 'ON_FETCH_IMAGES',
         payload: {
@@ -241,7 +241,22 @@ store.subscribe((state, action) => {
 
 // events
 window.addEventListener('load', () => {
-  store.dispatch({ type: 'ON_WINDOW_LOAD' })
+  store.dispatch({
+    type: 'ON_WINDOW_LOAD',
+    payload: {
+      searchValue: location.hash ? location.hash.split('?')[1].split('=')[1] : '',
+      path: location.hash ? '/' + location.hash.split('?')[0].split('#')[1] : '/'
+    }
+  })
+
+  if (location.hash.split('?')[0].split('#')[1] === 'search') {
+    store.dispatch({
+      type: 'ON_FETCH_IMAGES',
+      payload: {
+        currentPage: 1
+      }
+    })
+  }
 })
 
 window.addEventListener('keyup', (e) => {
