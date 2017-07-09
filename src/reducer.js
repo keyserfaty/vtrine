@@ -15,7 +15,6 @@ const initialState = {
   imagesQueue: [],
   currentImage: null,
   currentImageId: 0,
-  nextImage: null,
 
   // async
   imagesList: [],

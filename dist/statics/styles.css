@@ -79,6 +79,11 @@ header .actions .downloads {
     margin-left: 44px;
 }
 
+div.loading-bar {
+    border-bottom: 4px solid #26C6DA;
+    width: 0;
+}
+
 div.image {
     background: #F0F7F8 url('./images/test-image.jpg');
     height: 100vh;
@@ -88,13 +93,21 @@ div.image {
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: -100;
+}
+
+div.image.loading, div.image.loaded {
+    position: absolute;
+    transform: scale(1.1);
 }
 
 div.image.loading {
-    z-index: -100;
-    filter: blur(15px);
-    position: absolute;
-    transform: scale(1.1);
+    filter: blur(25px);
+}
+
+div.image.loaded {
+    filter: blur(0px);
+    transition: 0.5s filter;
 }
 
 footer {

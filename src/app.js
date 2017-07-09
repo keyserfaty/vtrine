@@ -1,6 +1,6 @@
 import { store } from './reducer'
 
-import { exists, preCachedImages } from './helpers'
+import { exists, preCachedImages, base64Encode } from './helpers'
 import { url } from './constants'
 
 import Downloads from './components/Downloads'
@@ -79,12 +79,40 @@ store.subscribe((state, action) => {
   const userNode = footer.querySelector('.user')
   const userPhotoNode = userNode.querySelector('.photo')
   const userNameNode = userNode.querySelector('.name')
+  const loadingBar = d.querySelector('.loading-bar')
 
   // imagesList changes
-  if (exists(state.currentImage)) {
+  if (exists(state.currentImage) && state.currentImage.id !== image.id) {
+    image.classList.remove('loaded')
+    image.classList.add('loading')
+
     state.currentImage.src.then(src => {
       image.setAttribute('style', `background: ${state.currentImage.color} url('${src}') no-repeat; background-size: cover;`)
+      image.setAttribute('id', state.currentImage.id)
     })
+
+    function loadImage(imageURI) {
+      const request = new XMLHttpRequest();
+
+      request.onprogress = function (e) {
+        if (e.lengthComputable) {
+          loadingBar.setAttribute('style', 'width: ' + e.loaded / e.total * 100 + '%')
+        }
+      }
+      request.onload = function () {
+        image.setAttribute('style', `background: url(data:image/jpeg;base64,${base64Encode(request.responseText)}) no-repeat; background-size: cover;`)
+        image.classList.remove('loading')
+        image.classList.add('loaded')
+      }
+      request.onloadend = function () {
+        loadingBar.setAttribute('style', 'width: 0%')
+      }
+      request.open("GET", imageURI, true);
+      request.overrideMimeType('text/plain; charset=x-user-defined');
+      request.send(null);
+    }
+
+    loadImage(state.currentImage.urls.full)
 
     image.classList.add('loading')
     userPhotoNode.setAttribute('style', 'background-image: url(' + state.currentImage.user.profile_image.small +')')
