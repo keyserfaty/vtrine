@@ -4,6 +4,7 @@ const Downloads = props => {
   const {
     dispatch,
     imagesQueue,
+    searchValue,
   } = props
 
   // Events
@@ -15,16 +16,12 @@ const Downloads = props => {
     dispatch({ type: 'ON_DOWNLOAD_ALL_DOWNLOADS' })
   }
 
-  const ulOnClick = e => {
-    if (e.target.parentNode.id.length) {
-      if (e.target.attributes[0].nodeValue === 'remove') {
-        dispatch({type: 'ON_REMOVE_IMAGE_FROM_QUEUE', payload: {id: e.target.parentNode.id}})
-      }
+  const removeOnClick = e => {
+    dispatch({type: 'ON_REMOVE_IMAGE_FROM_QUEUE', payload: {id: e.target.parentNode.id}})
+  }
 
-      if (e.target.attributes[0].nodeValue === 'download') {
-        dispatch({type: 'ON_DOWNLOAD_IMAGE_FROM_QUEUE', payload: {id: e.target.parentNode.id}})
-      }
-    }
+  const downloadOnClick = e => {
+    dispatch({type: 'ON_DOWNLOAD_IMAGE_FROM_QUEUE', payload: {id: e.target.parentNode.id}})
   }
 
   // DOM
@@ -36,11 +33,14 @@ const Downloads = props => {
       Node('div', { class: 'arrow' }),
       Node('div', { class: 'images' },
         Node('div', { class: 'content' },
-          Node('ul', { onClick: ulOnClick },
+          Node('ul', null,
             ...imagesQueue.map((image, i) =>
               Node('li', { class: 'image', style: `background: url('${image.urls.thumb}')` },
                 Node('div', { class: 'actions', id: i },
-                  Node('div', { class: 'remove' }), Node('div', { class: 'download' })))
+                  Node('div', { class: 'remove', onClick: removeOnClick }),
+                  Node('a', { class: 'download', download: `${searchValue}_${image.id}`, href: image.links.download, onClick: downloadOnClick },
+                    Node('img', { style: 'display:none;', src: image.links.download  })))
+              )
             )))),
       Node('div', { class: 'footer' },
         Node('button', { onClick: buttonOnClick }, 'Download selection')
