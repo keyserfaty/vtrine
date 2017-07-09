@@ -79,7 +79,7 @@ header .actions .downloads {
     margin-left: 44px;
 }
 
-section.single {
+div.image {
     background: #F0F7F8 url('./images/test-image.jpg');
     height: 100vh;
     width: 100%;
@@ -90,7 +90,7 @@ section.single {
     align-items: center;
 }
 
-section.single.loading {
+div.image.loading {
     z-index: -100;
     filter: blur(15px);
     position: absolute;

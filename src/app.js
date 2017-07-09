@@ -159,7 +159,7 @@ const body = d.querySelector('body')
 const header = d.querySelector('header')
 const actions = header.querySelector('.actions')
 const folder = header.querySelector('.downloads')
-const single = body.querySelector('.single')
+const image = body.querySelector('.image')
 const footer = body.querySelector('footer')
 
 store.subscribe((state, action) => {
@@ -170,10 +170,10 @@ store.subscribe((state, action) => {
 
   // route changes
   const searchBoxMainPreviousNode = d.querySelector('#search')
-  const onBoardingNode = single.querySelector('#on-boarding')
+  const onBoardingNode = image.querySelector('#on-boarding')
 
   if (state.routes.path === '/' && !exists(searchBoxMainPreviousNode)) {
-    single.appendChild(SearchBoxMain(props))
+    image.appendChild(SearchBoxMain(props))
   }
 
   if (state.routes.path !== '/' && exists(searchBoxMainPreviousNode)) {
@@ -188,7 +188,7 @@ store.subscribe((state, action) => {
   }
 
   if (state.routes.path === '/search' && !exists(onBoardingNode) && !exists(isFirstLoad)) {
-    single.appendChild(OnBoarding(props))
+    image.appendChild(OnBoarding(props))
     localStorage.setItem('first_load', false)
   }
 
@@ -224,8 +224,8 @@ store.subscribe((state, action) => {
 
   // imagesList changes
   if (exists(state.currentImage)) {
-    single.setAttribute('style', `background: ${state.currentImage.color} url('${state.currentImage.urls.thumb}') no-repeat; background-size: cover;`)
-    single.classList.add('loading')
+    image.setAttribute('style', `background: ${state.currentImage.color} url('${state.currentImage.urls.thumb}') no-repeat; background-size: cover;`)
+    image.classList.add('loading')
     userPhotoNode.setAttribute('style', 'background-image: url(' + state.currentImage.user.profile_image.small +')')
     userNameNode.innerText = state.currentImage.user.name
   }
