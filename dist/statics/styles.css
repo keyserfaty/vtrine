@@ -54,10 +54,12 @@ header .actions {
 }
 
 header .actions .help, header .actions .downloads {
-    height: 20px;
-    width: 20px;
     cursor: pointer;
     position: relative;
+}
+
+header .actions .downloads {
+    margin-left: 44px;
 }
 
 header .actions .downloads .full {
@@ -70,13 +72,13 @@ header .actions .downloads .full {
     border-radius: 10px;
 }
 
-header .actions .help {
-    background: url('./images/help.svg') no-repeat;
+header .actions svg.help path {
+    transform: translateY(-2px) translateX(-2px);
 }
 
-header .actions .downloads {
-    background: url('./images/folder.svg') no-repeat;
-    margin-left: 44px;
+header .actions svg:hover path,
+.icon.selected {
+    fill: #9AB3B3;
 }
 
 div.loading-bar {
