@@ -45,10 +45,10 @@ store.subscribe((state, action) => {
     header.insertBefore(SearchBoxHeader(props), actions)
   }
 
-  if (state.routes.path === '/search' && !exists(onBoardingNode) && !exists(isFirstLoad)) {
-    image.appendChild(OnBoarding(props))
-    localStorage.setItem('first_load', false)
-  }
+  //if (state.routes.path === '/search' && !exists(onBoardingNode) && !exists(isFirstLoad)) {
+  //  image.appendChild(OnBoarding(props))
+  //  localStorage.setItem('first_load', false)
+  //}
 
   // imagesQueue changes
   const downloadPreviousNode = d.querySelector('#download')
