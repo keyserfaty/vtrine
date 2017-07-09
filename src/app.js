@@ -93,14 +93,33 @@ const reducer = (state = initialState, action) => {
       }
     }
 
-    case 'ON_FETCH_IMAGES_SUCCESS': {
+    case 'ON_FETCH_IMAGES': {
       return {
         ...state,
-        imagesList: action.payload.images.results,
-        currentImageId: 0,
-        currentImage: action.payload.images.results[0],
-        nextImage: action.payload.images.results[1],
-        currentPage: 1,
+        currentPage: action.payload.currentPage
+      }
+    }
+
+    case 'ON_FETCH_IMAGES_SUCCESS': {
+      const isNewRequest = state.currentPage === 1
+
+      const currentImageId = isNewRequest
+        ? 0
+        : state.currentImageId
+
+      const imagesList = isNewRequest
+      ? action.payload.images.results
+      : [
+        ...state.imagesList,
+        ...action.payload.images.results
+      ]
+
+      return {
+        ...state,
+        imagesList,
+        currentImageId,
+        currentImage: action.payload.images.results[currentImageId],
+        nextImage: action.payload.images.results[currentImageId + 1],
         totalPages: action.payload.images.total_pages
       }
     }
@@ -159,7 +178,7 @@ store.subscribe((state, action) => {
     localStorage.setItem('first_load', false)
   }
 
-    // imagesQueue changes
+  // imagesQueue changes
   const downloadPreviousNode = d.querySelector('#download')
 
   if (state.displayDownloads && exists(downloadPreviousNode)) {
@@ -188,10 +207,25 @@ store.subscribe((state, action) => {
     userNameNode.innerText = state.currentImage.user.name
   }
 
+  // requesting new images
+  if (state.currentImageId === state.imagesList.length - 2 && state.imagesList.length / 10 === state.currentPage) {
+    store.dispatch({
+      type: 'ON_FETCH_IMAGES',
+      payload: {
+        currentPage: state.currentPage + 1
+      }
+    })
+  }
+
   switch (action.type) {
     case 'ON_INPUT_ENTER_KEY_DOWN': {
       window.history.pushState('', '', 'search?q=' + state.searchValue)
-      store.dispatch({ type: 'ON_FETCH_IMAGES' })
+      store.dispatch({
+        type: 'ON_FETCH_IMAGES',
+        payload: {
+          currentPage: 1
+        }
+      })
       break
     }
 
@@ -234,7 +268,7 @@ store.subscribe((state, action) => {
           })
         }
       );
-      xml.open('GET', url(1, state.searchValue));
+      xml.open('GET', url(state.currentPage, state.searchValue));
       xml.send();
 
       break
